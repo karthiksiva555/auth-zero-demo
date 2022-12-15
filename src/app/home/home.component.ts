@@ -31,4 +31,10 @@ export class HomeComponent implements OnInit {
     });
   }
 
+  deleteUserMetadata(){
+    this.userService.deleteUserMetadata().subscribe(()=> {
+      console.log('metadata deleted');
+    });
+  }
+
 }

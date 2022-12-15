@@ -19,17 +19,24 @@ export class UserService implements OnInit{
   }
 
   loadUserId(){
-    let userAuth; 
     this.authService.user$.subscribe(user => {
-      userAuth = user;
-      this.userId = userAuth?.sub ?? '';
+      this.userId = user?.sub ?? '';
       this.userLoaded.next(true);
     });
   }
 
   updateUserMetadata(): Observable<any>{
     const metadata = {
-      user_metadata: {hobby: 'not surfing and writing'}
+      // if metadata properties already exists => does an update
+      // else they will be added
+      user_metadata: {hobby: 'football', favorite_color: 'red'}
+    };
+    return this.httpClient.patch(this.baseUrl+'/'+this.userId, metadata);
+  }
+
+  deleteUserMetadata(){
+    const metadata = {
+      user_metadata: {hobby: null} // to remove 'hobby' property from user_metadata
     };
     return this.httpClient.patch(this.baseUrl+'/'+this.userId, metadata);
   }
