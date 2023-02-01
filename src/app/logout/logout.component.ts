@@ -8,9 +8,13 @@ import { AuthService } from '@auth0/auth0-angular';
 })
 export class LogoutComponent implements OnInit {
 
+  isLoggedIn: boolean = false;
   constructor(private authService: AuthService) { }
 
   ngOnInit(): void {
+    this.authService.isAuthenticated$.subscribe(result=>{
+      this.isLoggedIn = result;
+    })
   }
 
   logout(){

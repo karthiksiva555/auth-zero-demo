@@ -37,4 +37,13 @@ export class HomeComponent implements OnInit {
     });
   }
 
+  createUser(){
+    this.userService.createUser().subscribe((result)=>{
+      console.log('User created, result: '+ result);
+    },
+    error => {
+      console.log(error);
+    })
+  }
+
 }

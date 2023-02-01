@@ -40,4 +40,31 @@ export class UserService implements OnInit{
     };
     return this.httpClient.patch(this.baseUrl+'/'+this.userId, metadata);
   }
+
+  createUser(){
+    const userObject = this.createUserObject();
+    return this.httpClient.post(this.baseUrl, userObject);
+  }
+
+  createUserObject(){
+    const user = {
+      "email": "test.user1@gmail.com",
+      "phone_number": "+129999999999999",
+      "user_metadata": {},
+      "blocked": false,
+      "email_verified": false,
+      "phone_verified": false,
+      "app_metadata": {},
+      "given_name": "Test",
+      "family_name": "User1",
+      "name": "Test User1",
+      "nickname": "Test",
+      "user_id": "abc",
+      "connection": "UserCreation",
+      "password": "Test@123",
+      "verify_email": false,
+      "username": "testuser1"
+    };
+    return user;
+  }
 }

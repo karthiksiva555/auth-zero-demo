@@ -9,6 +9,8 @@ import { ProtectedComponent } from './protected/protected.component';
 import { HomeComponent } from './home/home.component';
 import { LogoutComponent } from './logout/logout.component';
 import { AuthHttpInterceptor } from '@auth0/auth0-angular';
+import { LoginComponent } from './login/login.component';
+import { ErrorComponent } from './error/error.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +18,9 @@ import { AuthHttpInterceptor } from '@auth0/auth0-angular';
     LoginButtonComponent,
     ProtectedComponent,
     HomeComponent,
-    LogoutComponent
+    LogoutComponent,
+    LoginComponent,
+    ErrorComponent
   ],
   imports: [
     BrowserModule,
@@ -26,8 +30,10 @@ import { AuthHttpInterceptor } from '@auth0/auth0-angular';
       domain: 'geotab-test.eu.auth0.com',
       clientId: '9yco3W5jnTTNci40lFafK37UfrDkwXnn',
       audience: 'https://geotab-test.eu.auth0.com/api/v2/',
-      organization: 'org_JPhijibfOm0RSf1K', // Geotab: org_JPhijibfOm0RSf1K  AT&T: org_dBKmIuK1mauVQAwV
+      organization: 'org_dBKmIuK1mauVQAwV', // Geotab: org_JPhijibfOm0RSf1K  AT&T: org_dBKmIuK1mauVQAwV
       scope: 'update:current_user_metadata',
+      connection: 'UserCreation',
+      errorPath: '/error',
       httpInterceptor: {
         allowedList: [
           {
