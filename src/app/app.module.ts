@@ -30,9 +30,9 @@ import { ErrorComponent } from './error/error.component';
       domain: 'geotab-test.eu.auth0.com',
       clientId: '9yco3W5jnTTNci40lFafK37UfrDkwXnn',
       audience: 'https://geotab-test.eu.auth0.com/api/v2/',
-      organization: 'org_dBKmIuK1mauVQAwV', // Geotab: org_JPhijibfOm0RSf1K  AT&T: org_dBKmIuK1mauVQAwV
+      //organization: 'org_dBKmIuK1mauVQAwV', // Geotab: org_JPhijibfOm0RSf1K  AT&T: org_dBKmIuK1mauVQAwV
       scope: 'update:current_user_metadata',
-      connection: 'UserCreation',
+      connection: 'UserCreation',// UserCreation, UserMigration 
       errorPath: '/error',
       httpInterceptor: {
         allowedList: [

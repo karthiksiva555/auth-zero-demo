@@ -29,7 +29,6 @@ export class AuthGuard implements CanActivate, OnInit {
     
       return this.authService.isAuthenticated$.pipe(
         map(response => {
-          console.log(this.parameters);
           if(response){
             return true;
           }
