@@ -9,7 +9,7 @@ import { catchError, map } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate, OnInit {
-  
+
   parameters: Params | undefined;
   /**
    *
@@ -26,17 +26,17 @@ export class AuthGuard implements CanActivate, OnInit {
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    
+
       return this.authService.isAuthenticated$.pipe(
         map(response => {
           if(response){
             return true;
           }
           console.log(route.queryParams);
-          this.router.navigate(['/login']);
+          this.router.navigate(['/login'], { queryParams: { returnUrl: state.url}});
           return false;
         }
-      ));      
+      ));
   }
-  
+
 }

@@ -1,37 +1,73 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, OnInit } from '@angular/core';
-import { AuthService, User } from '@auth0/auth0-angular';
-import { map, Observable, Subject } from 'rxjs';
+import { AuthService, GetTokenSilentlyOptions, GetTokenWithPopupOptions, User } from '@auth0/auth0-angular';
+import { map, Observable, Subject, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService implements OnInit{
 
-  baseUrl = "https://geotab-test.eu.auth0.com/api/v2/users";
-  userId: string = ''; 
-  userLoaded = new Subject<boolean>(); 
-  constructor(private httpClient: HttpClient, private authService: AuthService) {     
+  baseUrl = "https://dev.geotab.auth0app.com/api/v2/users";
+  userId: string = '';
+  userLoaded = new Subject<boolean>();
+  userName = new Subject<string>();
+
+  constructor(private httpClient: HttpClient, private authService: AuthService) {
   }
 
   ngOnInit(): void {
-    
+
   }
 
   loadUserId(){
     this.authService.user$.subscribe(user => {
       this.userId = user?.sub ?? '';
       this.userLoaded.next(true);
+      this.userName.next(user?.name ?? '');
     });
   }
 
-  updateUserMetadata(): Observable<any>{
+  getUsername(){
+    return this.authService.user$.subscribe(user => {
+      user?.name;
+    });
+  }
+
+  updateUserMetadataWithToken() {
+    const options: GetTokenWithPopupOptions = {
+      authorizationParams: {
+        audience: 'https://dev.geotab.auth0app.com/api/v2/',
+        scope: 'update:users_app_metadata,update:current_user_metadata'
+      },
+      cacheMode: 'off',
+    };
+    this.authService.getAccessTokenWithPopup(options)
+    .pipe(
+      tap(result => console.log(`token retrieved: ${result}`))
+    )
+    .subscribe((result) => {
+      if(result){
+        this.updateUserMetadata(result);
+      }
+    });
+  }
+
+  updateUserMetadata(token: string): void{
     const metadata = {
       // if metadata properties already exists => does an update
       // else they will be added
       user_metadata: {hobby: 'football', favorite_color: 'red'}
     };
-    return this.httpClient.patch(this.baseUrl+'/'+this.userId, metadata);
+    const patchOptions = {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    };
+
+    this.httpClient.patch(this.baseUrl+'/'+this.userId, metadata, patchOptions).subscribe(result => {
+      console.log('result after patch: '+ result);
+    });
   }
 
   deleteUserMetadata(){

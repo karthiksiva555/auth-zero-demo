@@ -11,6 +11,8 @@ import { LogoutComponent } from './logout/logout.component';
 import { AuthHttpInterceptor } from '@auth0/auth0-angular';
 import { LoginComponent } from './login/login.component';
 import { ErrorComponent } from './error/error.component';
+import { ConfirmLoginComponent } from './confirm-login/confirm-login.component';
+import { NewcallbackComponent } from './newcallback/newcallback.component';
 
 @NgModule({
   declarations: [
@@ -20,35 +22,23 @@ import { ErrorComponent } from './error/error.component';
     HomeComponent,
     LogoutComponent,
     LoginComponent,
-    ErrorComponent
+    ErrorComponent,
+    ConfirmLoginComponent,
+    NewcallbackComponent
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
     AuthModule.forRoot({
-      domain: 'geotab-test.eu.auth0.com',
-      clientId: '9yco3W5jnTTNci40lFafK37UfrDkwXnn',
-      audience: 'https://geotab-test.eu.auth0.com/api/v2/',
-      //organization: 'org_dBKmIuK1mauVQAwV', // Geotab: org_JPhijibfOm0RSf1K  AT&T: org_dBKmIuK1mauVQAwV
-      scope: 'update:current_user_metadata',
-      connection: 'UserCreation',// UserCreation, UserMigration 
+      domain: 'geotab-test.eu.auth0.com', // geotab-test.eu.auth0.com dev.geotab.auth0app.com
+      clientId: '9yco3W5jnTTNci40lFafK37UfrDkwXnn', // 9yco3W5jnTTNci40lFafK37UfrDkwXnn klYw7yW2QApN1adqafPpUyjt3X0teOhs
       errorPath: '/error',
-      httpInterceptor: {
-        allowedList: [
-          {
-            uri: 'https://geotab-test.eu.auth0.com/api/v2/*',
-            tokenOptions: {
-              audience: 'https://geotab-test.eu.auth0.com/api/v2/',
-              scope: 'update:current_user_metadata'
-            }
-          }
-        ]
+      authorizationParams: {
+        redirect_uri: window.location.origin+'/callback',
+        connection: 'UserCreation', // Username-Password-Authentication Geotab
       }
     })
-  ],
-  providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: AuthHttpInterceptor, multi: true },
   ],
   bootstrap: [AppComponent]
 })

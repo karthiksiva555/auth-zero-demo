@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../services/user.service';
+import { AuthService } from '@auth0/auth0-angular';
 
 @Component({
   selector: 'app-home',
@@ -9,14 +10,16 @@ import { UserService } from '../services/user.service';
 export class HomeComponent implements OnInit {
 
   userLoaded: boolean = false;
-
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService, public auth: AuthService) { }
+  username: string = '';
 
   ngOnInit(): void {
+    this.loadUser();
     this.userService.userLoaded.subscribe(isLoaded => {
       console.log('inside user loaded subject');
       this.userLoaded = isLoaded;
-    })
+    });
+    this.userService.userName.subscribe(name => this.username = name);
   }
 
   loadUser(){
@@ -26,9 +29,7 @@ export class HomeComponent implements OnInit {
   }
 
   updateUserMetadata(){
-    this.userService.updateUserMetadata().subscribe(()=> {
-      console.log('metadata updated');
-    });
+    this.userService.updateUserMetadataWithToken();
   }
 
   deleteUserMetadata(){

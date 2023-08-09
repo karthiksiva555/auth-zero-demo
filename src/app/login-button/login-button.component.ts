@@ -7,8 +7,9 @@ import { AuthService } from '@auth0/auth0-angular';
   styleUrls: ['./login-button.component.css']
 })
 export class LoginButtonComponent implements OnInit {
+  private myValue: string = 'Hello State test';
 
-  constructor(private auth: AuthService) { 
+  constructor(private auth: AuthService) {
 
   }
 
@@ -16,7 +17,10 @@ export class LoginButtonComponent implements OnInit {
   }
 
   loginWithRedirect(){
-    this.auth.loginWithRedirect();
+    const appState = {
+      myValue: this.myValue
+    };
+    this.auth.loginWithRedirect({ appState });
   }
 
 }
